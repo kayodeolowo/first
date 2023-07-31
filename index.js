@@ -1,9 +1,19 @@
-const fs = require('fs')
+const http = require('http');
+const url = require('url');
 
-const textin = fs.readFileSync('./text/input.text', 'utf-8');
-//console.log(textin)
+const server = http.createServer((req, res) => {
+  const pathName = req.url;
 
-const textout = `this us writtedn text us me ${textin} created on ${Date.now()}`
-fs.writeFileSync('./text/output.text', textout)
-console.log('written')
+  if (pathName === '/' || pathName === '/overview') {
+    res.end('This is overview');
+  } else if (pathName === '/product') {
+    res.end('This is product');
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Page not found');
+  }
+});
 
+server.listen(8000, '127.0.0.1', () => {
+  console.log('Server is running');
+});
